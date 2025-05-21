@@ -1,7 +1,12 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
+
+console.log(process.env.KEY);
 
 //* Middleware
 app.use(cors());
@@ -12,7 +17,6 @@ app.get("/", (req, res) => {
   res.json("Simple Animal App");
 });
 
-
 //* Global Error Handler
 app.use((err, req, res, next) => {
   console.error("Error:", err.message || err);
@@ -21,9 +25,12 @@ app.use((err, req, res, next) => {
   });
 });
 
-
-const port = 3003;
+const port = process.env.port || 3003;
 
 app.listen(port, () => {
-  console.log(`server is listening @ ${port}`);
+  if (process.env.NODE_ENV === "development") {
+    console.log(`development: server is listening @ ${port}`);
+  } else {
+    console.log(`production: : server is listening @ ${port}`)
+  }
 });
