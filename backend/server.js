@@ -1,21 +1,24 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import catRouter from "./router/cat.js";
 
-dotenv.config();
+dotenv.config(); // loads environment variables from .env file into process.env object
 
 const app = express();
 
-console.log(process.env.KEY);
+// console.log(process.env.KEY);
 
 //* Middleware
 app.use(cors());
-app.use(express.json());
+// app.use(express.json());
 
 //* Routes
 app.get("/", (req, res) => {
   res.json("Simple Animal App");
 });
+
+app.use("/cat", catRouter);
 
 //* Global Error Handler
 app.use((err, req, res, next) => {
@@ -25,12 +28,12 @@ app.use((err, req, res, next) => {
   });
 });
 
-const port = process.env.port || 3003;
+const port = process.env.PORT || 3003;
 
 app.listen(port, () => {
   if (process.env.NODE_ENV === "development") {
     console.log(`development: server is listening @ ${port}`);
   } else {
-    console.log(`production: : server is listening @ ${port}`)
+    console.log(`production: : server is listening @ ${port}`);
   }
 });
